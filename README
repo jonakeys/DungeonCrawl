@@ -7,7 +7,7 @@ zodat ik leer programmeren in de taal C++. Ook leer ik zo versiebeheer te gebrui
 
 INSTALLATIE
 Compileer het .cpp-bestand op je eigen computer. In Linux kan dat bijvoorbeeld zo:
-$: g++ DungeonCrawl.cpp -o DungeonCrawl
+	g++ DungeonCrawl.cpp -o DungeonCrawl
 
 DOEL
 Je bent een avonturier die door een kerker loopt. Het doel is om bij de schat
