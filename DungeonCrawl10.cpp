@@ -1,5 +1,9 @@
-// Beginnersoefening van http://www.cplusplus.com/forum/articles/12974
-// Programma is een dungeon-achtig spel
+/* Beginnersoefening van http://www.cplusplus.com/forum/articles/12974
+
+ Versie 1.0
+
+ Het spel werkt. Je kunt bewegen door de dungeon, er is een schat te vinden en er zijn vallen aanwezig.
+*/
 
 #include <iostream>
 #include <stdlib.h>

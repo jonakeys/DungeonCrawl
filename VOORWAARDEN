@@ -35,3 +35,4 @@ Allow the user (marked by G in the example) to move either up, down, left, or ri
 
 HINT: Don't let the player move off the gameboard! You program will crash if they move off the top or bottom of the board!
 (the same holds true for enemies) 
+
