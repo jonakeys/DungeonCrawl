@@ -45,7 +45,7 @@ void DispIntroText();
 bool TestLocFree(int x, int y);
 void TreasureTrap(int x, int y);
 
-// Declar variables
+// Declare variables
 char dungeon[7][10];
 char player = 'P', empty = '.', treasure = 'X', trap1 = 'T', trap2 = 'T', trap3 = 'T';
 int playerRow, playerCol;
