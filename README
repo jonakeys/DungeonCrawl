@@ -1,5 +1,17 @@
-Dit is een oefening voor het gebruik van Git en om een programma te schrijven, zodat ik leer programmeren in de taal C++.
+28.04.2013
 
-En om versiebeheer te gebruiken.
+// DUNGEON CRAWL \\
+
+Dit is een oefening voor het gebruik van Git en om een programma te schrijven,
+zodat ik leer programmeren in de taal C++. Ook leer ik zo versiebeheer te gebruiken.
+
+DOEL
+Je bent een avonturier die door een kerker loopt. Het doel is om bij de schat
+te komen. Pas op dat je onderweg niet in een val terechtkomt!
+
+SPEELVELD
+P = de speler
+X = de schat
+T = vallen
 
 - Jonathan van der Steege

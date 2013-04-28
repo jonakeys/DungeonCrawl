@@ -43,8 +43,9 @@ int main()
   int command;
   srand ( time(NULL) );
   cout << "Welkom bij Dungeon Crawler!\n\n"
-       << "DOEL\nJe bent een avonturier die door een kerker loopt.\nHet doel is om bij de schat te komen.\n\n"
-       << "SPEELVELD\nP = Speler\nT = Val\nX = Schat\n\n"
+       << "DOEL\nJe bent een avonturier die door een kerker loopt.\nHet doel is om bij de schat te komen. "
+       << "Pas op dat je onderweg niet in een val terechtkomt!\n\n"
+       << "SPEELVELD\nP = Speler\nX = Schat\nT = Val\n\n"
        << "Druk op (1) om te spelen of een andere toets om te stoppen.\n";
   cin >> command;
 
