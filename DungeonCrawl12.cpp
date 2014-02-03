@@ -51,7 +51,6 @@ void TreasureEnemy(int x, int y);
 void MoveEnemy1();
 void MoveEnemy2();
 void MoveEnemy3();
-bool done=false;
 
 // Declare variables
 const int DHEIGHT=10, DWIDTH=20;
@@ -84,9 +83,12 @@ int main()
     while (PLAY) {
       SetLocations();
       DrawDungeon();
-      cout << "Beweeg de speler:\n\n\t(W)boven\n(A)links \t(D)rechts\n\t(S)onder \t\t\tof (E)inde: ";
+      cout << "Beweeg de speler (voer meerdere letters in om meer locaties per beurt te verplaatsen):\n\n"
+	   << "\t(W)boven\n(A)links \t(D)rechts\n\t(S)onder \t\t\tof (E)inde: ";
       Input();
       MoveEnemy1();
+      MoveEnemy2();
+      MoveEnemy3();
     }
   }
   // Exit the game.
@@ -101,7 +103,7 @@ void DispIntroText () {
   cout << "Welkom bij Dungeon Crawl!\n\n"
        << "DOEL\t\tJe bent een avonturier die door een kerker loopt. Het doel is om bij de schat te komen.\n"
        << "\t\tPas op dat je onderweg niet met een vijand in aanraking komt!\n\n"
-       << "SPEELVELD\tP = Speler\t\tX = Schat\t\t1, 2 of 3 = Vijand (Vijand 1 beweegt door de kerker.)\n\n"
+       << "SPEELVELD\tP = Speler\t\tX = Schat\t\t1, 2 of 3 = Vijand\n\n"
        << "Druk op (1) om te spelen of een andere toets om te stoppen.\n";
 }
 
@@ -346,6 +348,7 @@ void SetEnemy3Location(int row, int col) {
 
 // Move enemies around each turn
 void MoveEnemy1() {
+  bool done=false;
   do {
     int enemy1RowTest, enemy1ColTest;
     enemy1RowTest = enemy1Row;
@@ -376,9 +379,63 @@ void MoveEnemy1() {
 }
 
 void MoveEnemy2() {
-
+  bool done=false;
+  do {
+    int enemy2RowTest, enemy2ColTest;
+    enemy2RowTest = enemy2Row;
+    enemy2ColTest = enemy2Col;
+    enemyMove = rand() % 5;
+    if (enemyMove == 1) {
+      enemy2RowTest += 1;
+    }
+    else if (enemyMove == 2) {
+      enemy2RowTest -= 1;
+    }
+    else if (enemyMove == 3) {
+      enemy2ColTest -= 1;
+    }
+    else if (enemyMove == 4) {
+      enemy2ColTest += 1;
+    }
+    if(TestLocFree(enemy2RowTest, enemy2ColTest)){
+      dungeon[enemy2Row][enemy2Col] = empty;
+      enemy2Row = enemy2RowTest;
+      enemy2Col = enemy2ColTest;
+      SetEnemy2Location(enemy2Row, enemy2Col);
+      done = true;
+    }
+  }
+  while(!done);
+  done = false;
 }
 
 void MoveEnemy3(){
-
+  bool done=false;
+  do {
+    int enemy3RowTest, enemy3ColTest;
+    enemy3RowTest = enemy3Row;
+    enemy3ColTest = enemy3Col;
+    enemyMove = rand() % 5;
+    if (enemyMove == 1) {
+      enemy3RowTest += 1;
+    }
+    else if (enemyMove == 2) {
+      enemy3RowTest -= 1;
+    }
+    else if (enemyMove == 3) {
+      enemy3ColTest -= 1;
+    }
+    else if (enemyMove == 4) {
+      enemy3ColTest += 1;
+    }
+    if(TestLocFree(enemy3RowTest, enemy3ColTest)){
+      dungeon[enemy3Row][enemy3Col] = empty;
+      enemy3Row = enemy3RowTest;
+      enemy3Col = enemy3ColTest;
+      SetEnemy3Location(enemy3Row, enemy3Col);
+      done = true;
+    }
+  }
+  while(!done);
+  done = false;
 }

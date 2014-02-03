@@ -9,12 +9,12 @@ Compileer het .cpp-bestand op je eigen computer. In Linux kan dat bijvoorbeeld z
 	g++ DungeonCrawl.cpp -o DungeonCrawl
 
 DOEL
-Je bent een avonturier die door een kerker loopt. Het doel is om bij de schat te komen. Pas op dat je onderweg niet door een vijand wordt opgegeten! Twee vijanden staan op dezelfde plek en één vijand beweegt door de dungeon.
+Je bent een avonturier die door een kerker loopt. Het doel is om bij de schat te komen. Pas op dat je onderweg niet door een vijand wordt opgegeten! Iedere keer dat jij een stap zet, bewegen de vijanden ook.
 
 SPEELVELD
 P = de speler
 X = de schat
-1,2 en 3 = vijanden (vijand 1 beweegt door de kerker)
+1,2 en 3 = vijanden
 
 - Jonathan van der Steege
 jonakeys@hotmail.com
