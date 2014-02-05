@@ -65,6 +65,7 @@ int enemy2Row, enemy2Col;
 int enemy3Row, enemy3Col;
 bool PLAY = true, INVALID = false;
 int enemyMove;
+int stepsCount=0;
 
 enum MOVEMENT { boven, onder, links, rechts };
 
@@ -89,6 +90,7 @@ int main()
 	   << "\t\t(w)boven\n\t(a)links \t(d)rechts\n\t\t(s)onder \t\t\tof (e)inde\n";
       cout << "\nInvoer: ";
       Input();
+      ++stepsCount;
       MoveEnemy1();
       MoveEnemy2();
       MoveEnemy3();
@@ -232,7 +234,8 @@ bool TestLocFree(int x, int y) {
 // The game ends after this.
 void TreasureEnemy(int x, int y) {
   if (dungeon[x][y] == 'X') {
-    cout << "\nGeweldig! Je hebt de schat gevonden!\n";
+    cout << "\nGeweldig! Je hebt de schat gevonden!\n"
+	 << "Je hebt er " << stepsCount << " stappen over gedaan.\n";
     PLAY = false;
   }
   else {
