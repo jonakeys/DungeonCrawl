@@ -89,8 +89,8 @@ int main()
       cout << "Kies een richting voor de speler:\n\n"
 	   << "\t\t(w)boven\n\t(a)links \t(d)rechts\n\t\t(s)onder \t\t\tof (e)inde\n";
       cout << "\nInvoer: ";
+      stepsCount++;
       Input();
-      ++stepsCount;
       MoveEnemy1();
       MoveEnemy2();
       MoveEnemy3();
