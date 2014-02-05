@@ -5,12 +5,13 @@
    
    1.0 Het spel werkt. Je kunt bewegen door de dungeon, er is een schat te vinden en er zijn vallen aanwezig.
    1.1 Optimaliseren van de code.
-   1.2 Bewegende vijanden toegevoegd. (verplaatsen 1 stap per beurt)
+   1.2 Bewegende vijanden toegevoegd. (verplaatsen één locatie per beurt, vijand 1 beweegt zich naar de speler toe)
 */
 
 #include <iostream>
 #include <stdlib.h>
 #include <ctime>
+
 using namespace std;
 
 // Declare functions for the dungeon
@@ -42,6 +43,7 @@ bool TestValidEnemy(int i, int row, int col);
 
 // Declare functions for main program
 void DispIntroText();
+void DispTitle();
 
 // Declare functions for testing location
 bool TestLocFree(int x, int y);
@@ -83,8 +85,9 @@ int main()
     while (PLAY) {
       SetLocations();
       DrawDungeon();
-      cout << "Beweeg de speler (voer meerdere letters in om meer locaties per beurt te verplaatsen):\n\n"
-	   << "\t(W)boven\n(A)links \t(D)rechts\n\t(S)onder \t\t\tof (E)inde: ";
+      cout << "Kies een richting voor de speler:\n\n"
+	   << "\t\t(w)boven\n\t(a)links \t(d)rechts\n\t\t(s)onder \t\t\tof (e)inde\n";
+      cout << "\nInvoer: ";
       Input();
       MoveEnemy1();
       MoveEnemy2();
@@ -100,11 +103,13 @@ int main()
 
 // Intro text and main menu.
 void DispIntroText () {
-  cout << "Welkom bij Dungeon Crawl!\n\n"
-       << "DOEL\t\tJe bent een avonturier die door een kerker loopt. Het doel is om bij de schat te komen.\n"
-       << "\t\tPas op dat je onderweg niet met een vijand in aanraking komt!\n\n"
-       << "SPEELVELD\tP = Speler\t\tX = Schat\t\t1, 2 of 3 = Vijand\n\n"
-       << "Druk op (1) om te spelen of een andere toets om te stoppen.\n";
+  system("clear");
+  DispTitle();
+  cout       << "\nGemaakt door: Jonathan van der Steege (jonakeys@hotmail.com)\n\n"
+	     << "DOEL\t\tJe bent een avonturier die door een kerker loopt. Het doel is om bij de schat te komen.\n"
+	     << "\t\tPas op dat je onderweg niet met een vijand in aanraking komt!\n\n"
+	     << "SPEELVELD\tP = Speler\t\tX = Schat\t\t1, 2 of 3 = Vijand\n\n"
+	     << "Druk op (1) om te spelen of een andere toets om te stoppen: ";
 }
 
 // Fill the dungeon with '.' (dots)
@@ -120,19 +125,22 @@ void ClearDungeon() {
 void DrawDungeon() {
   system("clear");
   if ( INVALID == true ) { InvalidInput(); INVALID = false; }
-  else cout << "Dungeon Crawl\n\n\n\n";
+  else { DispTitle();
+    cout << "\n\n\n";}
   for (int i = 0; i < DHEIGHT; i++) {
-    cout << "\t";
+    cout << "\t\t";
     for (int j = 0; j < DWIDTH; j++) {
       cout << dungeon[i][j] << " ";
     }
     cout << "\n\n";
   }
+  cout << "\n";
 }
 
 // Message to warn players they reached the border.
 void InvalidInput() {
-  cout << "Dungeon Crawl\n\nJe kunt niet verder. Dit is de rand van de kerker.\n\n";
+  DispTitle();
+  cout << "\nJe kunt niet verder. Dit is de rand van de kerker.\n\n";
   INVALID = true;
 }
 
@@ -140,7 +148,10 @@ void InvalidInput() {
 void Input() {
   char input;
   cin >> input;
-  if ( input == 'e') { PLAY = false;}
+  if ( input == 'e') { 
+    cout << "Bedankt voor het spelen, tot een volgende keer!\n";
+    PLAY = false;
+  }
   else if ( input == 'w') {
     if (TestValid(boven) && TestLocFree(playerRow-1, playerCol)) {
       SetPlayerLocation(playerRow-1, playerCol);
@@ -225,7 +236,7 @@ void TreasureEnemy(int x, int y) {
     PLAY = false;
   }
   else {
-    cout << "\nRAWRRRRR! Je bent opgegeten! Het avontuur is voorbij.\n";
+    cout << "\nRAWRRRRR! Je bent opgegeten en je avontuur is helaas voorbij.\n";
     PLAY = false;
   }
 }
@@ -266,7 +277,7 @@ void InitTreasure() {
   } while (!done);
 }
 
-// Initialize the traps.
+// Initialize the enemies.
 void InitEnemy1() {
   bool done = false;
   do {
@@ -303,7 +314,7 @@ void InitEnemy3() {
   } while (!done);
 }
 
-// Set locations of player, treasure and traps (combined function).
+// Set locations of player, treasure and enemies (combined function).
 void SetLocations() {
       SetPlayerLocation(playerRow, playerCol);
       SetTreasureLocation(treasureRow, treasureCol);
@@ -330,7 +341,7 @@ void SetTreasureLocation(int row, int col) {
   dungeon[row][col] = treasure;
 }
 
-// Set location of traps.
+// Set location of enemies.
 void SetEnemy1Location(int row, int col) {
   dungeon[enemy1Row][enemy1Col] = enemy1;
   enemy1Row = row;
@@ -339,38 +350,60 @@ void SetEnemy1Location(int row, int col) {
 
 void SetEnemy2Location(int row, int col) {
   dungeon[row][col] = enemy2;
+  enemy2Row = row;
+  enemy2Col = col;
 }
 
 void SetEnemy3Location(int row, int col) {
   dungeon[row][col] = enemy3;
+  enemy3Row = row;
+  enemy3Col = col;
 }
 
 
-// Move enemies around each turn
+// Move enemies at each turn.
 void MoveEnemy1() {
   bool done=false;
+  int whichMove;
+
   do {
     int enemy1RowTest, enemy1ColTest;
     enemy1RowTest = enemy1Row;
     enemy1ColTest = enemy1Col;
-    enemyMove = rand() % 5;
-    if (enemyMove == 1) {
-      enemy1RowTest += 1;
+
+    // Move the enemy towards the player.
+    whichMove = rand() % 2;
+
+    if(whichMove == 0) {
+      if(enemy1RowTest < playerRow) {
+	enemy1RowTest += 1;
+      }
+      else if(enemy1RowTest == playerRow) {
+      }
+      else if(enemy1RowTest > playerRow) {
+	enemy1RowTest -= 1;
+      }
     }
-    else if (enemyMove == 2) {
-      enemy1RowTest -= 1;
+    
+    else if (whichMove == 1) {
+      if(enemy1ColTest < playerCol) {
+	enemy1ColTest += 1;
+      }
+      else if(enemy1ColTest == playerCol) {
+      }
+      else if(enemy1ColTest > playerCol) {
+	enemy1ColTest -= 1;
+      }
     }
-    else if (enemyMove == 3) {
-      enemy1ColTest -= 1;
-    }
-    else if (enemyMove == 4) {
-      enemy1ColTest += 1;
-    }
+    
     if(TestLocFree(enemy1RowTest, enemy1ColTest)){
       dungeon[enemy1Row][enemy1Col] = empty;
       enemy1Row = enemy1RowTest;
       enemy1Col = enemy1ColTest;
       SetEnemy1Location(enemy1Row, enemy1Col);
+      done = true;
+    }    
+    else {
       done = true;
     }
   }
@@ -384,17 +417,17 @@ void MoveEnemy2() {
     int enemy2RowTest, enemy2ColTest;
     enemy2RowTest = enemy2Row;
     enemy2ColTest = enemy2Col;
-    enemyMove = rand() % 5;
-    if (enemyMove == 1) {
+    enemyMove = rand() % 4;
+    if (enemyMove == boven) {
       enemy2RowTest += 1;
     }
-    else if (enemyMove == 2) {
+    else if (enemyMove == onder) {
       enemy2RowTest -= 1;
     }
-    else if (enemyMove == 3) {
+    else if (enemyMove == links) {
       enemy2ColTest -= 1;
     }
-    else if (enemyMove == 4) {
+    else if (enemyMove == rechts) {
       enemy2ColTest += 1;
     }
     if(TestLocFree(enemy2RowTest, enemy2ColTest)){
@@ -415,17 +448,17 @@ void MoveEnemy3(){
     int enemy3RowTest, enemy3ColTest;
     enemy3RowTest = enemy3Row;
     enemy3ColTest = enemy3Col;
-    enemyMove = rand() % 5;
-    if (enemyMove == 1) {
+    enemyMove = rand() % 4;
+    if (enemyMove == boven) {
       enemy3RowTest += 1;
     }
-    else if (enemyMove == 2) {
+    else if (enemyMove == onder) {
       enemy3RowTest -= 1;
     }
-    else if (enemyMove == 3) {
+    else if (enemyMove == links) {
       enemy3ColTest -= 1;
     }
-    else if (enemyMove == 4) {
+    else if (enemyMove == rechts) {
       enemy3ColTest += 1;
     }
     if(TestLocFree(enemy3RowTest, enemy3ColTest)){
@@ -438,4 +471,13 @@ void MoveEnemy3(){
   }
   while(!done);
   done = false;
+}
+
+// Display the title of the game.
+void DispTitle() {
+  cout << "    ____  __  ___   __________________  _   __   __________  ___ _       ____ \n"
+       << "   / __ \\/ / / / | / / ____/ ____/ __ \\/ | / /  / ____/ __ \\/   | |     / / / \n"
+       << "  / / / / / / /  |/ / / __/ __/ / / / /  |/ /  / /   / /_/ / /| | | /| / / /  \n"
+       << " / /_/ / /_/ / /|  / /_/ / /___/ /_/ / /|  /  / /___/ _, _/ ___ | |/ |/ / /___\n"
+       << "/_____/\\____/_/ |_/\\____/_____/\\____/_/ |_/   \\____/_/ |_/_/  |_|__/|__/_____/\n";
 }
