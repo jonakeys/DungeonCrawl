@@ -1,7 +1,7 @@
 /* Beginnersoefening van http://www.cplusplus.com/forum/articles/12974
    
    DUNGEON CRAWL
-   Versie 1.2 (03.02.2014)
+   Versie 1.2 (07.02.2014)
    
    1.0 Het spel werkt. Je kunt bewegen door de dungeon, er is een schat te vinden en er zijn vallen aanwezig.
    1.1 Optimaliseren van de code.
@@ -94,6 +94,13 @@ int main()
       MoveEnemy1();
       MoveEnemy2();
       MoveEnemy3();
+      if (dungeon[enemy1Row-1][enemy1Col] == 'P' || dungeon[enemy1Row+1][enemy1Col] == 'P' || 
+	  dungeon[enemy1Row][enemy1Col-1] == 'P' || dungeon[enemy1Row][enemy1Col+1] == 'P') {
+	PLAY = false;
+	SetLocations();
+	DrawDungeon();
+	TreasureEnemy(enemy1Row, enemy1Col);      
+      }
     }
   }
   // Exit the game.
@@ -107,11 +114,11 @@ int main()
 void DispIntroText () {
   system("clear");
   DispTitle();
-  cout       << "\nGemaakt door: Jonathan van der Steege (jonakeys@hotmail.com)\n\n"
+  cout       << "\nGemaakt door: Jonathan van der Steege (jonakeys@hotmail.com)\n\n\n\n"
 	     << "DOEL\t\tJe bent een avonturier die door een kerker loopt. Het doel is om bij de schat te komen.\n"
 	     << "\t\tPas op dat je onderweg niet met een vijand in aanraking komt!\n\n"
-	     << "SPEELVELD\tP = Speler\t\tX = Schat\t\t1, 2 of 3 = Vijand\n\n"
-	     << "Druk op (1) om te spelen of een andere toets om te stoppen: ";
+	     << "SPEELVELD\tP = Speler\t\tX = Schat\t\t1, 2 of 3 = Vijand\n\n\n\n"
+	     << "Kies (1) om te spelen, een andere toets om te stoppen: ";
 }
 
 // Fill the dungeon with '.' (dots)
@@ -411,7 +418,6 @@ void MoveEnemy1() {
     }
   }
   while(!done);
-  done = false;
 }
 
 void MoveEnemy2() {
