@@ -197,13 +197,13 @@ bool TestValid(int i) {
   if (i == boven) {
     if (playerRow > 0) valid = true;
   }
-  if (i == onder) {
+  else if (i == onder) {
     if (playerRow < DHEIGHT-1) valid = true;
   }
-  if (i == links) {
+  else if (i == links) {
     if (playerCol > 0) valid = true;
   }
-  if (i == rechts) {
+  else if (i == rechts) {
     if (playerCol < DWIDTH-1) valid = true;
   }
   return valid;
