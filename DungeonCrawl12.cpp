@@ -382,7 +382,7 @@ void MoveEnemy1() {
     enemy1ColTest = enemy1Col;
 
     // Move the enemy towards the player.
-    whichMove = rand() % 2;
+    whichMove = rand() % 3;
 
     if(whichMove == 0) {
       if(enemy1RowTest < playerRow) {
@@ -405,6 +405,8 @@ void MoveEnemy1() {
 	enemy1ColTest -= 1;
       }
     }
+
+    else if (whichMove == 2) {}
     
     if(TestLocFree(enemy1RowTest, enemy1ColTest)){
       dungeon[enemy1Row][enemy1Col] = empty;
